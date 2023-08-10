@@ -1,0 +1,4 @@
+{
+  "endpoint": "api/elevated-coral",
+  "root": "stepzen/curl"
+}
