@@ -20,8 +20,8 @@ function HumidityChart({ results }: Props) {
     const dataFormatter = (number: number) => `${number} %`
 
   return (
-    <Card>
-        <Title>Humidity Levels</Title>
+    <Card className='bg-gray-100 shadow-none ring-white'>
+        <Title className='font-bold'>Humidity Levels</Title>
         <AreaChart
             className='mt-6'
             data={data}

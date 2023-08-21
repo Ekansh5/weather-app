@@ -21,8 +21,8 @@ function TempChart({ results }: Props) {
     const dataFormatter = (number: number) => `${number}`
 
   return (
-    <Card>
-        <Title>Temperature & UV Index</Title>
+    <Card className='bg-gray-100 shadow-none ring-white'>
+        <Title className='font-bold'>Temperature & UV Index</Title>
         <AreaChart
             className='mt-6'
             data={data}

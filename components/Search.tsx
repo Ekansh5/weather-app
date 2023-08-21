@@ -1,11 +1,14 @@
 'use client'
 
+import { ChevronLeftIcon } from '@heroicons/react/solid';
 import { Country, City } from 'country-state-city'
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Select from 'react-select';
-import { GlobeIcon } from '@heroicons/react/outline'
-import { GlobeAltIcon } from '@heroicons/react/outline'
+
+const delay = (ms: number | undefined) => new Promise(
+    resolve => setTimeout(resolve, ms)
+  );
 
 type option = {
     value: {
@@ -36,34 +39,24 @@ const options = Country.getAllCountries().map((country) => ({
     label: country.name,
 }));
 
-function CityPicker() {
+ function Search() {
     const customStyles = {
         option: (defaultStyles: any, state: { isSelected: any; }) => ({
           ...defaultStyles,
-          color: state.isSelected ? "#000000" : "#fff",
-          backgroundColor: state.isSelected ? "#0094C6" : "#040F16",
-          overflow: "hidden",
-          border: "none",
-          "&:hover": {
-            backgroundColor: "#005E76",
-            cursor: 'pointer',
-          }
         }),
     
         _control: (defaultStyles : any) => ({
             ...defaultStyles,
+            width: "500px",
+            cursor: 'pointer',
             whiteSpace: "normal",
             color: "#fff",
-            backgroundColor: "#18181b",
+            backgroundColor: "#f3f4f6",
             padding: "5px",
             border: "none",
             boxShadow: "none",
             "&:hover" : {
-                border: '3px solid transparent',
-                background: 'linear-gradient(to right, #18181b, #18181b), linear-gradient(to right, #005E76 , #0094C6)',
-                backgroundClip: 'padding-box, border-box',
-                backgroundOrigin: 'padding-box, border-box',
-                cursor: 'pointer',  
+                transform: 'scale(1.02)',
             },
         }), 
         get control() {
@@ -72,16 +65,19 @@ function CityPicker() {
         set control(value) {
             this._control = value;
         },
-        singleValue: (defaultStyles : any) => ({ ...defaultStyles, color: "#fff" }),
+        singleValue: (defaultStyles : any) => ({ ...defaultStyles, }),
       };
     
     const [selectedCountry, setSelectedCountry] = useState<option>(null);
     const [selectedCity, setSelectedCity] = useState<cityOption>(null);
+    const [hidden, setHidden] = useState('visible')
+
     const router = useRouter();
 
     const handleSelectedCountry = (option: option) => {
         setSelectedCountry(option);
         setSelectedCity(null);
+        setHidden('hidden')
     }
 
     const handleSelectedCity = (option: cityOption) => {
@@ -89,15 +85,18 @@ function CityPicker() {
         router.push(`/location/${option?.value.name}/${option?.value.latitude}/${option?.value.longitude}`)
     }
 
+    const handleClick = async () => {
+        await delay(500);
+        setHidden('visible')
+        setSelectedCountry(null)
+        }
+
   return (
-    <div className='space-y-4'>
-        <div className='space-y-2'>
-            <div className='flex items-center space-x-2 text-white/80 font-bold'>
-                <GlobeIcon className='h-5 w-5 text-white' />
-                <label htmlFor="country">Country</label>
-            </div>
+    <div className='flex'>
+        <div className={`space-y-2 ${hidden}`}>
         <Select 
             className='text-black'
+            placeholder='Select Country'
             value={selectedCountry}
             onChange={handleSelectedCountry}
             options={options}
@@ -105,14 +104,12 @@ function CityPicker() {
         />
       </div>
         {selectedCountry && (
-            <div className='space-y-2'>
-            <div className='flex items-center space-x-2 text-white/80 font-bold'>
-                <GlobeAltIcon className='h-5 w-5 text-white' />
-                <label htmlFor="country">City</label>
-            </div>
+            <div className='space-y-2 flex items-center'>
+        <ChevronLeftIcon className={`h-7 w-7 cursor-pointer text-[#0094C6] transition-all duration-300 active:-translate-x-5`} onClick={handleClick} />
         <Select 
             className='text-black'
             value={selectedCity}
+            placeholder='Select City'
             onChange={handleSelectedCity}
             options={City.getCitiesOfCountry(
                 selectedCountry.value.isoCode
@@ -135,4 +132,4 @@ function CityPicker() {
   )
 }
 
-export default CityPicker
+export default Search

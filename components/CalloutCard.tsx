@@ -11,7 +11,7 @@ type Props = {
 function CalloutCard({message, warning} : Props) {
   return (
     <Callout 
-    className="mt-4"
+    className="mt-4 ring-none flex flex-row"
         title={message}
         icon={warning ? ExclamationIcon : CheckCircleIcon}
         color={warning? "rose" : "teal"}
