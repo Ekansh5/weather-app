@@ -36,18 +36,18 @@ async function WeatherPage({params: {city, lat, long, country}}: Props) {
   const results: Root = data.myQuery;
   const dataToSend = cleanData(results, city);
 
-  // const res = await fetch(`${getBasePath()}/api/getWeatherSummary`,{
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json"
-  //   },
-  //   body: JSON.stringify({
-  //     weatherData: dataToSend,
-  //   }),
-  // });
+  const res = await fetch(`${getBasePath()}/api/getWeatherSummary`,{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      weatherData: dataToSend,
+    }),
+  });
 
-  // const GPTData = await res.json()
-  // const { content } = GPTData;
+  const GPTData = await res.json()
+  const { content } = GPTData;
 
   console.log(results)
   return (
