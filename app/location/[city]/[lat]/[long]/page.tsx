@@ -44,11 +44,11 @@ async function WeatherPage({params: {city, lat, long}}: Props) {
       {/* Header */}
       <Header />
         <div className='flex-1 px-5 lg:w-3/4'>
-          <div className=''>
+          <div>
             <div className='pb-5 flex flex-1 justify-between items-center'>
               <div>
               <h2 className='text-xl font-bold text-black'>Today's Overview</h2>
-              <p className='text-sm text-gray-400'>Last Updated at:
+              <p className='text-sm text-gray-400'>Last Updated at: &nbsp; 
               {new Date(results.current_weather.time).toLocaleString()} ({results.timezone})
               </p>
               </div>
