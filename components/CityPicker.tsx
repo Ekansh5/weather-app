@@ -90,7 +90,7 @@ function CityPicker() {
     }
 
   return (
-    <div className='space-y-4'>
+    <div className='space-y-4 ring-none border-none'>
         <div className='space-y-2'>
             <div className='flex items-center space-x-2 text-white/80 font-bold'>
                 <GlobeIcon className='h-5 w-5 text-white' />
@@ -130,8 +130,8 @@ function CityPicker() {
         />
       </div>
         )}
-      
     </div>
+    
   )
 }
 

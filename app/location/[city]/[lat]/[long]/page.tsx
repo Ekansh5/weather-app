@@ -6,8 +6,6 @@ import RainChart from '@/components/RainChart';
 import StatCard from '@/components/StatCard';
 import TempChart from '@/components/TempChart';
 import fetchWeatherQuery from '@/graphql/queries/fetchWeatherQueries';
-import cleanData from '@/lib/cleanData';
-import getBasePath from '@/lib/getBasePath';
 import Header from '@/components/Header';
 
 export const revalidate = 60;
@@ -21,7 +19,7 @@ type Props = {
     }
 }
 
-async function WeatherPage({params: {city, lat, long, country}}: Props) {
+async function WeatherPage({params: {city, lat, long}}: Props) {
   const client = getClient();
   const { data } = await client.query({
     query: fetchWeatherQuery,
@@ -34,22 +32,7 @@ async function WeatherPage({params: {city, lat, long, country}}: Props) {
   })
 
   const results: Root = data.myQuery;
-  const dataToSend = cleanData(results, city);
 
-  const res = await fetch(`${getBasePath()}/api/getWeatherSummary`,{
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      weatherData: dataToSend,
-    }),
-  });
-
-  const GPTData = await res.json()
-  const { content } = GPTData;
-
-  console.log(results)
   return (
     <div className='font-quicksand flex flex-col bg-white min-h-screen'>
       <InformationPanel 
@@ -71,11 +54,6 @@ async function WeatherPage({params: {city, lat, long, country}}: Props) {
               </div>
             </div>
 
-            <div className='mb-8'>
-              <CalloutCard
-                message="this is where the gpt text will go"
-              />
-            </div>
             <div className='grid grid-cols-1 xl:grid-cols-2 gap-5'>
               <StatCard 
                 title="Maximum Temperature"
